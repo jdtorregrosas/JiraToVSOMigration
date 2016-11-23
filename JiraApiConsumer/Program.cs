@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using JiraApiConsumer.Models;
+using ServiceStack;
 
 namespace JiraApiConsumer
 {
@@ -25,11 +26,6 @@ namespace JiraApiConsumer
 
             try
             {
-                Console.WriteLine("------------ Projects:  ");
-                Projects projects = new Projects { };
-                projects = await apiConsumer.GetProjects();
-                Projects.Show(projects);
-
                 Console.WriteLine("------------ Boards:  ");
                 Boards boards = new Boards { };
                 boards = await apiConsumer.GetBoards();
@@ -39,6 +35,28 @@ namespace JiraApiConsumer
                 Board board = new Board { };
                 board = await apiConsumer.GetBoard("1");
                 Board.Show(board);
+
+                Console.WriteLine("------------ Board 1 Backlog:  ");
+                Issues backlog = new Issues { };
+                backlog = await apiConsumer.GetBoardBacklog("1");
+                Issues.Show(backlog);
+
+                Console.WriteLine("------------ Board 1 Issues:  ");
+                Issues boardIssues = new Issues { };
+                boardIssues = await apiConsumer.GetBoardIssues("1");
+                Issues.Show(boardIssues);
+
+                Console.WriteLine("------------ Board 1 Sprints:  ");
+                Sprints sprints = null;
+                sprints = await apiConsumer.GetBoardSprints("1");
+                Sprints.Show(sprints);
+
+                Console.WriteLine("------------ Projects from board 1:  ");
+                Projects projects = new Projects { };
+                projects = await apiConsumer.GetBoardProjects("1");
+                Projects.Show(projects);
+
+                
 
                 Console.WriteLine("------------ Current User:  ");
                 User user = new User { };
@@ -62,8 +80,14 @@ namespace JiraApiConsumer
 
                 Console.WriteLine("------------ Issues:  ");
                 Issues issues = null;
-                issues = await apiConsumer.GetIssues();
+                issues = await apiConsumer.GetIssues("10000");
                 Issues.Show(issues);
+
+                Console.WriteLine("------------ Permissions:  ");
+                Permissions permissions = null;
+                permissions = await apiConsumer.GetPermissions();
+                Permissions.Show(permissions);
+
             }
             catch (Exception e)
             {

@@ -27,6 +27,87 @@ namespace JiraApiConsumer
 
         }
 
+        public async Task<Boards> GetBoards()
+        {
+            Boards board = null;
+            var response = await client.GetAsync("rest/agile/1.0/board");
+            if (response.IsSuccessStatusCode)
+            {
+                board = await response.Content.ReadAsAsync<Boards>();
+            }
+            return board;
+        }
+
+        public async Task<Board> GetBoard(string id)
+        {
+            Board board = null;
+
+            var response = await client.GetAsync($"rest/agile/1.0/board/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                board = await response.Content.ReadAsAsync<Board>();
+            }
+            return board;
+        }
+
+        public async Task<Issues> GetBoardBacklog(string boardId)
+        {
+            Issues issues = null;
+            var response = await client.GetAsync($"/rest/agile/1.0/board/{boardId}/backlog");
+            if (response.IsSuccessStatusCode)
+            {
+                issues = await response.Content.ReadAsAsync<Issues>();
+            }
+            return issues;
+        }
+
+        public async Task<Issues> GetBoardIssues(string boardId)
+        {
+            Issues issues = null;
+
+            var response = await client.GetAsync($"rest/agile/1.0/board/{boardId}/issue");
+            if (response.IsSuccessStatusCode)
+            {
+                issues = await response.Content.ReadAsAsync<Issues>();
+            }
+            return issues;
+        }
+
+        public async Task<Sprints> GetBoardSprints(string boardId)
+        {
+            Sprints sprints = null;
+
+            var response = await client.GetAsync($"/rest/agile/1.0/board/{boardId}/sprint");
+            if (response.IsSuccessStatusCode)
+            {
+                sprints = await response.Content.ReadAsAsync<Sprints>();
+            }
+            return sprints;
+        }
+
+        public async Task<Projects> GetBoardProjects(string boardId)
+        {
+            Projects product = null;
+            var response = await client.GetAsync($"rest/agile/1.0/board/{boardId}/project");
+            if (response.IsSuccessStatusCode)
+            {
+                product = await response.Content.ReadAsAsync<Projects>();
+            }
+            return product;
+        }
+
+        public async Task<Permissions> GetPermissions()
+        {
+            Permissions permissions = null;
+
+            var response = await client.GetAsync($"rest/api/2/mypermissions");
+            if (response.IsSuccessStatusCode)
+            {
+                permissions = await response.Content.ReadAsAsync<Permissions>();
+            }
+            return permissions;
+        }
+
         public async Task<User[]> GetUsers()
         {
             User[] users = null;
@@ -50,41 +131,7 @@ namespace JiraApiConsumer
             }
             return user;
         }
-
-        public async Task<Board> GetBoard(string id)
-        {
-            Board board = null;
-
-            var response = await client.GetAsync($"rest/agile/1.0/board/{id}");
-            if (response.IsSuccessStatusCode)
-            {
-                board = await response.Content.ReadAsAsync<Board>();
-            }
-            return board;
-        }
-
-        public async Task<Projects> GetProjects()
-        {
-            Projects product = null;
-            var response = await client.GetAsync("rest/agile/1.0/board/1/project");
-            if (response.IsSuccessStatusCode)
-            {
-                product = await response.Content.ReadAsAsync<Projects>();
-            }
-            return product;
-        }
-
-        public async Task<Boards> GetBoards()
-        {
-            Boards board = null;
-            var response = await client.GetAsync("rest/agile/1.0/board");
-            if (response.IsSuccessStatusCode)
-            {
-                board = await response.Content.ReadAsAsync<Boards>();
-            }
-            return board;
-        }
-
+        
         public async Task<WorkFlow[]> GetWorkFlows()
         {
             WorkFlow[] wf = null;
@@ -97,11 +144,11 @@ namespace JiraApiConsumer
             return wf;
         }
 
-        public async Task<Issues> GetIssues()
+        public async Task<Issues> GetIssues(string projectId)
         {
             Issues issues = null;
 
-            var response = await client.GetAsync("rest/api/2/search?jql=project=10000");
+            var response = await client.GetAsync($"rest/api/2/search?jql=project={projectId}");
             if (response.IsSuccessStatusCode)
             {
                 issues = await response.Content.ReadAsAsync<Issues>();

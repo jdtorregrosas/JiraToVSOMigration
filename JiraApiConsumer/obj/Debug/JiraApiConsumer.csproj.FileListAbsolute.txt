@@ -10,3 +10,5 @@ C:\JiraApiConsumer\JiraApiConsumer\obj\Debug\JiraApiConsumer.exe
 C:\JiraApiConsumer\JiraApiConsumer\obj\Debug\JiraApiConsumer.pdb
 C:\JiraApiConsumer\JiraApiConsumer\bin\Debug\CsvHelper.dll
 C:\JiraApiConsumer\JiraApiConsumer\bin\Debug\CsvHelper.xml
+C:\JiraApiConsumer\JiraApiConsumer\bin\Debug\ServiceStack.Text.dll
+C:\JiraApiConsumer\JiraApiConsumer\bin\Debug\ServiceStack.Text.xml
