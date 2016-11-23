@@ -1,0 +1,12 @@
+C:\JiraApiConsumer\JiraApiConsumer\bin\Debug\JiraApiConsumer.exe.config
+C:\JiraApiConsumer\JiraApiConsumer\obj\Debug\JiraApiConsumer.csprojResolveAssemblyReference.cache
+C:\JiraApiConsumer\JiraApiConsumer\bin\Debug\JiraApiConsumer.exe
+C:\JiraApiConsumer\JiraApiConsumer\bin\Debug\JiraApiConsumer.pdb
+C:\JiraApiConsumer\JiraApiConsumer\bin\Debug\Newtonsoft.Json.dll
+C:\JiraApiConsumer\JiraApiConsumer\bin\Debug\System.Net.Http.Formatting.dll
+C:\JiraApiConsumer\JiraApiConsumer\bin\Debug\Newtonsoft.Json.xml
+C:\JiraApiConsumer\JiraApiConsumer\bin\Debug\System.Net.Http.Formatting.xml
+C:\JiraApiConsumer\JiraApiConsumer\obj\Debug\JiraApiConsumer.exe
+C:\JiraApiConsumer\JiraApiConsumer\obj\Debug\JiraApiConsumer.pdb
+C:\JiraApiConsumer\JiraApiConsumer\bin\Debug\CsvHelper.dll
+C:\JiraApiConsumer\JiraApiConsumer\bin\Debug\CsvHelper.xml
