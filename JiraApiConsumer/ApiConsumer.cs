@@ -96,5 +96,17 @@ namespace JiraApiConsumer
             }
             return wf;
         }
+
+        public async Task<Issues> GetIssues()
+        {
+            Issues issues = null;
+
+            var response = await client.GetAsync("rest/api/2/search?jql=project=10000");
+            if (response.IsSuccessStatusCode)
+            {
+                issues = await response.Content.ReadAsAsync<Issues>();
+            }
+            return issues;
+        }
     }
 }

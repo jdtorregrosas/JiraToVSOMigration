@@ -59,6 +59,11 @@ namespace JiraApiConsumer
                 {
                     WorkFlow.Show(i);
                 }
+
+                Console.WriteLine("------------ Issues:  ");
+                Issues issues = null;
+                issues = await apiConsumer.GetIssues();
+                Issues.Show(issues);
             }
             catch (Exception e)
             {
