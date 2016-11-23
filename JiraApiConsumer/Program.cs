@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using JiraApiConsumer.Models;
 
 namespace JiraApiConsumer
 {
@@ -20,19 +21,31 @@ namespace JiraApiConsumer
             string username = Console.ReadLine();
             Console.WriteLine("Password:");
             string password = Console.ReadLine();
-            ApiConsumer apiConsumer = new ApiConsumer("http://testingvso.atlassian.net/", username, password);
+            ApiConsumer apiConsumer = new ApiConsumer("https://testingvso.atlassian.net/", username, password);
 
             try
             {
                 Projects projects = new Projects { };
-                Boards boards = new Boards { };
-                Board board = new Board { };
                 projects = await apiConsumer.GetProjects();
-                boards = await apiConsumer.GetBoards();
-                board = await apiConsumer.GetBoard("1");
                 Projects.Show(projects);
+
+                Boards boards = new Boards { };
+                boards = await apiConsumer.GetBoards();
                 Boards.Show(boards);
+
+                Board board = new Board { };
+                board = await apiConsumer.GetBoard("1");
                 Board.Show(board);
+
+                User user = new User { };
+                user = await apiConsumer.GetCurrentUser();
+                User.Show(user);
+
+                User[] users = null;
+                users = await apiConsumer.GetUsers();
+                foreach (var i in users) {
+                    User.Show(i);
+                }
             }
             catch (Exception e)
             {

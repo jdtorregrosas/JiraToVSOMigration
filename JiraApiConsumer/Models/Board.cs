@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace JiraApiConsumer
+namespace JiraApiConsumer.Models
 {
     public class Board
     {

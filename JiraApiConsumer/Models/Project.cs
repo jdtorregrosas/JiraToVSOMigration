@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace JiraApiConsumer
+namespace JiraApiConsumer.Models
 {
     public class Project
     {
@@ -32,10 +32,10 @@ namespace JiraApiConsumer
 
     public class Projects
     {
-        public int maxResults { get; set; }
-        public int startAt { get; set; }
-        public int total { get; set; }
-        public bool isLast { get; set; }
+        //public int maxResults { get; set; }
+        //public int startAt { get; set; }
+        //public int total { get; set; }
+        //public bool isLast { get; set; }
         public Project[] values { get; set; }
 
         public static void Show(Projects projects)

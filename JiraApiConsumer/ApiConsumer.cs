@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using JiraApiConsumer.Models;
 
 namespace JiraApiConsumer
 {
@@ -25,6 +26,31 @@ namespace JiraApiConsumer
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authString);
 
         }
+
+        public async Task<User[]> GetUsers()
+        {
+            User[] users = null;
+
+            var response = await client.GetAsync("rest/api/2/user/search?username=%");
+            if (response.IsSuccessStatusCode)
+            {
+                users = await response.Content.ReadAsAsync<User[]>();
+            }
+            return users;
+        }
+
+        public async Task<User> GetCurrentUser()
+        {
+            User user= null;
+
+            var response = await client.GetAsync("rest/api/2/myself");
+            if (response.IsSuccessStatusCode)
+            {
+                user = await response.Content.ReadAsAsync<User>();
+            }
+            return user;
+        }
+
         public async Task<Board> GetBoard(string id)
         {
             Board board = null;
@@ -40,7 +66,6 @@ namespace JiraApiConsumer
         public async Task<Projects> GetProjects()
         {
             Projects product = null;
-
             var response = await client.GetAsync("rest/agile/1.0/board/1/project");
             if (response.IsSuccessStatusCode)
             {
