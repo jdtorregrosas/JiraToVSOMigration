@@ -108,6 +108,18 @@ namespace JiraApiConsumer
             return permissions;
         }
 
+        public async Task<User> GetCurrentUser()
+        {
+            User user = null;
+
+            var response = await client.GetAsync("rest/api/2/myself");
+            if (response.IsSuccessStatusCode)
+            {
+                user = await response.Content.ReadAsAsync<User>();
+            }
+            return user;
+        }
+
         public async Task<User[]> GetUsers()
         {
             User[] users = null;
@@ -118,18 +130,6 @@ namespace JiraApiConsumer
                 users = await response.Content.ReadAsAsync<User[]>();
             }
             return users;
-        }
-
-        public async Task<User> GetCurrentUser()
-        {
-            User user= null;
-
-            var response = await client.GetAsync("rest/api/2/myself");
-            if (response.IsSuccessStatusCode)
-            {
-                user = await response.Content.ReadAsAsync<User>();
-            }
-            return user;
         }
         
         public async Task<WorkFlow[]> GetWorkFlows()
@@ -144,7 +144,7 @@ namespace JiraApiConsumer
             return wf;
         }
 
-        public async Task<Issues> GetIssues(string projectId)
+        public async Task<Issues> GetProjectIssues(string projectId)
         {
             Issues issues = null;
 

@@ -80,7 +80,7 @@ namespace JiraApiConsumer
 
                 Console.WriteLine("------------ Issues:  ");
                 Issues issues = null;
-                issues = await apiConsumer.GetIssues("10000");
+                issues = await apiConsumer.GetProjectIssues("10000");
                 Issues.Show(issues);
 
                 Console.WriteLine("------------ Permissions:  ");
