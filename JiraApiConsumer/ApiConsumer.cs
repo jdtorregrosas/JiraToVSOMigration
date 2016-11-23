@@ -84,5 +84,17 @@ namespace JiraApiConsumer
             }
             return board;
         }
+
+        public async Task<WorkFlow[]> GetWorkFlows()
+        {
+            WorkFlow[] wf = null;
+
+            var response = await client.GetAsync("rest/api/2/workflow");
+            if (response.IsSuccessStatusCode)
+            {
+                wf = await response.Content.ReadAsAsync<WorkFlow[]>();
+            }
+            return wf;
+        }
     }
 }

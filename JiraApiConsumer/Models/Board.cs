@@ -3,6 +3,9 @@ using System;
 
 namespace JiraApiConsumer.Models
 {
+    /// <summary>
+    /// Board model from Jira Api
+    /// </summary>
     public class Board
     {
         public string id { get; set; }
@@ -18,6 +21,9 @@ namespace JiraApiConsumer.Models
         }
     }
 
+    /// <summary>
+    /// Boards model from Jira Api
+    /// </summary>
     public class Boards
     {
         public int maxResults { get; set; }

@@ -3,6 +3,9 @@ using System;
 
 namespace JiraApiConsumer.Models
 {
+    /// <summary>
+    /// User model from Jira Api
+    /// </summary>
     class User
     {
         public string self { get; set; }
@@ -17,7 +20,7 @@ namespace JiraApiConsumer.Models
         public static void Show(User user)
         {
             string valuesStr = "";
-            valuesStr += $"(\nself: {user.self}, \nkey: {user.key}, \name: {user.name}, \nemailAddress: {user.emailAddress}, \ndisplayName: {user.displayName}, \nactive: {user.active}, \ntimeZone: {user.timeZone}, \nlocale: {user.locale}\n)";
+            valuesStr += $"(\nself: {user.self}, \nkey: {user.key}, \nname: {user.name}, \nemailAddress: {user.emailAddress}, \ndisplayName: {user.displayName}, \nactive: {user.active}, \ntimeZone: {user.timeZone}, \nlocale: {user.locale}\n)";
             Console.WriteLine(valuesStr);
         }
     }
