@@ -56,13 +56,7 @@ namespace JiraApiConsumer
                 //sprints = await apiConsumer.GetBoardSprints("1");
                 //Sprints.Show(sprints);
 
-                Console.WriteLine("------------ Projects from board 1:  ");
-                Models.Jira.Project[] projects = null;
-                projects = await apiConsumer.GetProjects();
-                foreach (var i in projects)
-                {
-                    Models.Jira.Project.Show(i);
-                }
+                
 
                 Console.WriteLine("------------ Sprints from Project 10000:  ");
                 Sprints sprints = null;
@@ -100,8 +94,16 @@ namespace JiraApiConsumer
                 //permissions = await apiConsumer.GetPermissions();
                 //Permissions.Show(permissions);
 
+                Console.WriteLine("------------ Projects from board 1:  ");
+                Models.Jira.Project[] projects = null;
+                projects = await apiConsumer.GetProjects();
+                foreach (var i in projects)
+                {
+                    Models.Jira.Project.Show(i);
+                    vsoApiConsumer.createProject(new Models.Vso.Project(i.name, i.description, "Git", "6b724908-ef14-45cf-84f8-768b5384da45"));
+                }
                 //vsoApiConsumer.getProjects();
-                //vsoApiConsumer.createProject(new Models.Vso.Project("Fager Prject!", "project 2", "Git", "6b724908-ef14-45cf-84f8-768b5384da45"));
+
 
             }
             catch (Exception e)
