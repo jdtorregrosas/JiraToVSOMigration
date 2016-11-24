@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using JiraApiConsumer.Models;
-using ServiceStack;
+using System.Configuration;
 
 namespace JiraApiConsumer
 {
@@ -16,13 +16,11 @@ namespace JiraApiConsumer
 
         static async Task RunAsync()
         {
-
+            string jiraUrl = ConfigurationManager.AppSettings["jiraUrl"];
+            string jiraUsername = ConfigurationManager.AppSettings["jiraUsername"];
+            string jiraPassword = ConfigurationManager.AppSettings["jiraPassword"];
             // Basic Auth
-            Console.WriteLine("Username:");
-            string username = Console.ReadLine();
-            Console.WriteLine("Password:");
-            string password = Console.ReadLine();
-            ApiConsumer apiConsumer = new ApiConsumer("https://testingvso.atlassian.net/", username, password);
+            JiraApiConsumer apiConsumer = new JiraApiConsumer(jiraUrl, jiraUsername, jiraPassword);
 
             try
             {
