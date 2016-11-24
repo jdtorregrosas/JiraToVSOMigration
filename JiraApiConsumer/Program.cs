@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using JiraApiConsumer.Models;
+using JiraApiConsumer.Models.Jira;
+using JiraApiConsumer.Models.Vso;
+using JiraApiConsumer.Clients;
 using System.Configuration;
 
 namespace JiraApiConsumer
@@ -19,9 +21,13 @@ namespace JiraApiConsumer
             string jiraUrl = ConfigurationManager.AppSettings["jiraUrl"];
             string jiraUsername = ConfigurationManager.AppSettings["jiraUsername"];
             string jiraPassword = ConfigurationManager.AppSettings["jiraPassword"];
+
+            string vsoUrl = ConfigurationManager.AppSettings["vsoUrl"];
+            string vsoUsername = ConfigurationManager.AppSettings["vsoUsername"];
+            string vsoPassword = ConfigurationManager.AppSettings["vsoPassword"];
             // Basic Auth
-            JiraApiConsumer apiConsumer = new JiraApiConsumer(jiraUrl, jiraUsername, jiraPassword);
-            VSOApiConsumer vsoApiConsumer = new VSOApiConsumer(jiraUrl, jiraUsername, jiraPassword);
+            JiraApi apiConsumer = new JiraApi(jiraUrl, jiraUsername, jiraPassword);
+            VSOApi vsoApiConsumer = new VSOApi(vsoUrl, vsoUsername, vsoPassword);
 
             try
             {
@@ -50,12 +56,10 @@ namespace JiraApiConsumer
                 //sprints = await apiConsumer.GetBoardSprints("1");
                 //Sprints.Show(sprints);
 
-                //Console.WriteLine("------------ Projects from board 1:  ");
-                //Projects projects = new Projects { };
-                //projects = await apiConsumer.GetBoardProjects("1");
-                //Projects.Show(projects);
-
-
+                Console.WriteLine("------------ Projects from board 1:  ");
+                Projects projects = new Projects { };
+                projects = await apiConsumer.GetBoardProjects("1");
+                Projects.Show(projects);
 
                 //Console.WriteLine("------------ Current User:  ");
                 //User user = new User { };
@@ -65,7 +69,8 @@ namespace JiraApiConsumer
                 //Console.WriteLine("------------ All Users:  ");
                 //User[] users = null;
                 //users = await apiConsumer.GetUsers();
-                //foreach (var i in users) {
+                //foreach (var i in users)
+                //{
                 //    User.Show(i);
                 //}
 
@@ -86,7 +91,9 @@ namespace JiraApiConsumer
                 //Permissions permissions = null;
                 //permissions = await apiConsumer.GetPermissions();
                 //Permissions.Show(permissions);
-                VSOApiConsumer.getTest();
+
+                //vsoApiConsumer.getProjects();
+                //vsoApiConsumer.createProject(new Models.Vso.Project("FabrikamTravel", "Frabrikam travel app for Windows Phone", "Git", "6b724908-ef14-45cf-84f8-768b5384da45"));
 
             }
             catch (Exception e)

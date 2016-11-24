@@ -20,12 +20,13 @@ namespace JiraApiConsumer.Models.Jira
         public string id { get; set; }
         public string key { get; set; }
         public string name { get; set; }
+        public string description { get; set; }
         public MyAvatars avatarUrls { get; set; }
 
         public static void Show(Project project)
         {
             string valuesStr = "";
-            valuesStr += $"(\nself: {project.self}, \nid: {project.id}, \nkey: {project.key}, \nname: {project.name}, \navatarUrls: \n\t48x48: {project.avatarUrls.x48} \n\t24x24: {project.avatarUrls.x24} \n\t16x16: {project.avatarUrls.x16} \n\t32x32: {project.avatarUrls.x32}\n)";
+            valuesStr += $"(\nself: {project.self}, \nid: {project.id}, \nkey: {project.key}, \nname: {project.name}, \ndescription: {project.description}, \navatarUrls: \n\t48x48: {project.avatarUrls.x48} \n\t24x24: {project.avatarUrls.x24} \n\t16x16: {project.avatarUrls.x16} \n\t32x32: {project.avatarUrls.x32}\n)";
             Console.WriteLine(valuesStr);
         }
     }
@@ -43,7 +44,7 @@ namespace JiraApiConsumer.Models.Jira
             string valuesStr = "";
             for (int i = 0; i < projects.values.Length; i++)
             {
-                valuesStr += $"(\nself: {projects.values[i].self}, \nid: {projects.values[i].id}, \nkey: {projects.values[i].key}, \nname: {projects.values[i].name}, \navatarUrls: \n\t48x48: {projects.values[i].avatarUrls.x48} \n\t24x24: {projects.values[i].avatarUrls.x24} \n\t16x16: {projects.values[i].avatarUrls.x16} \n\t32x32: {projects.values[i].avatarUrls.x32}\n)";
+                valuesStr += $"(\nself: {projects.values[i].self}, \nid: {projects.values[i].id}, \nkey: {projects.values[i].key}, \nname: {projects.values[i].name}, \ndescription: {projects.values[i].description}, \navatarUrls: \n\t48x48: {projects.values[i].avatarUrls.x48} \n\t24x24: {projects.values[i].avatarUrls.x24} \n\t16x16: {projects.values[i].avatarUrls.x16} \n\t32x32: {projects.values[i].avatarUrls.x32}\n)";
             }
             Console.WriteLine(valuesStr);
         }

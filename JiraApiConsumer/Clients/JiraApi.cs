@@ -3,17 +3,18 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using JiraApiConsumer.Models;
+using JiraApiConsumer.Models.Jira;
+// using JiraApiConsumer.Models.Vso;
 
-namespace JiraApiConsumer
+namespace JiraApiConsumer.Clients
 {
-    class JiraApiConsumer
+    class JiraApi
     {
         HttpClient client = new HttpClient();
         string url = "";
         string username = "";
         string password = "";
-        public JiraApiConsumer(string url, string username, string password) {
+        public JiraApi(string url, string username, string password) {
             this.url = url;
             this.username = username;
             this.password = password;
