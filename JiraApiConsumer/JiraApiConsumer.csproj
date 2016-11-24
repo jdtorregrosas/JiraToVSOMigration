@@ -60,7 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiConsumer.cs" />
+    <Compile Include="JiraApiConsumer.cs" />
     <Compile Include="Models\Board.cs" />
     <Compile Include="Models\Issue.cs" />
     <Compile Include="Models\Permission.cs" />
@@ -70,6 +70,7 @@
     <Compile Include="Models\WorkFlow.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VSOApiConsumer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

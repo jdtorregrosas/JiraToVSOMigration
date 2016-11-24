@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace JiraApiConsumer.Models
+namespace JiraApiConsumer.Models.Jira
 {
     class Sprint
     {

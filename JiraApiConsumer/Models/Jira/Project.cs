@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace JiraApiConsumer.Models
+namespace JiraApiConsumer.Models.Jira
 {
     public class Project
     {

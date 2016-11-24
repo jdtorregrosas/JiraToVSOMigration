@@ -2,7 +2,7 @@
 using System;
 
 
-namespace JiraApiConsumer.Models
+namespace JiraApiConsumer.Models.Jira
 {
     /// <summary>
     /// WorkFlow model from Jira Api

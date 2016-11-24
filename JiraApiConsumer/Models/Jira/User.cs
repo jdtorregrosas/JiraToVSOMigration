@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace JiraApiConsumer.Models
+namespace JiraApiConsumer.Models.Jira
 {
     /// <summary>
     /// User model from Jira Api

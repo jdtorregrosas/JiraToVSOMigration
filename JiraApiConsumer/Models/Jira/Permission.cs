@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace JiraApiConsumer.Models
+namespace JiraApiConsumer.Models.Jira
 {
     class Permission
     {
