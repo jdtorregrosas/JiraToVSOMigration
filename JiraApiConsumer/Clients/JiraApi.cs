@@ -86,15 +86,27 @@ namespace JiraApiConsumer.Clients
             return sprints;
         }
 
-        public async Task<Projects> GetBoardProjects(string boardId)
+        public async Task<Project[]> GetProjects()
         {
-            Projects product = null;
-            var response = await client.GetAsync($"rest/agile/1.0/board/{boardId}/project");
+            Project[] product = null;
+            var response = await client.GetAsync($"rest/api/2/project");
             if (response.IsSuccessStatusCode)
             {
-                product = await response.Content.ReadAsAsync<Projects>();
+                product = await response.Content.ReadAsAsync<Project[]>();
             }
             return product;
+        }
+
+        public async Task<Sprints> GetProjectSprints(string projectId)
+        {
+            Sprints sprints = null;
+
+            var response = await client.GetAsync($"/rest/greenhopper/1.0/integration/teamcalendars/sprint/list?jql=project={projectId}");
+            if (response.IsSuccessStatusCode)
+            {
+                sprints = await response.Content.ReadAsAsync<Sprints>();
+            }
+            return sprints;
         }
 
         public async Task<Permissions> GetPermissions()

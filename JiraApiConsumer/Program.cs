@@ -57,9 +57,17 @@ namespace JiraApiConsumer
                 //Sprints.Show(sprints);
 
                 Console.WriteLine("------------ Projects from board 1:  ");
-                Projects projects = new Projects { };
-                projects = await apiConsumer.GetBoardProjects("1");
-                Projects.Show(projects);
+                Models.Jira.Project[] projects = null;
+                projects = await apiConsumer.GetProjects();
+                foreach (var i in projects)
+                {
+                    Models.Jira.Project.Show(i);
+                }
+
+                Console.WriteLine("------------ Sprints from Project 10000:  ");
+                Sprints sprints = null;
+                sprints = await apiConsumer.GetProjectSprints("10000");
+                Sprints.Show(sprints);
 
                 //Console.WriteLine("------------ Current User:  ");
                 //User user = new User { };
@@ -93,7 +101,7 @@ namespace JiraApiConsumer
                 //Permissions.Show(permissions);
 
                 //vsoApiConsumer.getProjects();
-                //vsoApiConsumer.createProject(new Models.Vso.Project("FabrikamTravel", "Frabrikam travel app for Windows Phone", "Git", "6b724908-ef14-45cf-84f8-768b5384da45"));
+                //vsoApiConsumer.createProject(new Models.Vso.Project("Fager Prject!", "project 2", "Git", "6b724908-ef14-45cf-84f8-768b5384da45"));
 
             }
             catch (Exception e)
