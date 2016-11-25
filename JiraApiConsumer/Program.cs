@@ -5,14 +5,19 @@ using JiraApiConsumer.Models.Jira;
 using JiraApiConsumer.Models.Vso;
 using JiraApiConsumer.Clients;
 using System.Configuration;
+using System.Windows.Forms;
+using JiraApiConsumer.Views;
 
 namespace JiraApiConsumer
 {
     public class Program
     {
         static HttpClient client = new HttpClient();
+        [STAThreadAttribute]
         static void Main()
         {
+            Application.EnableVisualStyles();
+            Application.Run(new Mainmenu()); // or whatever
             RunAsync().Wait();
         }
 

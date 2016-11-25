@@ -1,0 +1,15 @@
+C:\JiraApiConsumer\JiraApiConsumer\bin\Release\JiraApiConsumer.exe.config
+C:\JiraApiConsumer\JiraApiConsumer\bin\Release\JiraApiConsumer.exe
+C:\JiraApiConsumer\JiraApiConsumer\bin\Release\JiraApiConsumer.pdb
+C:\JiraApiConsumer\JiraApiConsumer\bin\Release\CsvHelper.dll
+C:\JiraApiConsumer\JiraApiConsumer\bin\Release\Newtonsoft.Json.dll
+C:\JiraApiConsumer\JiraApiConsumer\bin\Release\ServiceStack.Text.dll
+C:\JiraApiConsumer\JiraApiConsumer\bin\Release\System.Net.Http.Formatting.dll
+C:\JiraApiConsumer\JiraApiConsumer\bin\Release\CsvHelper.xml
+C:\JiraApiConsumer\JiraApiConsumer\bin\Release\Newtonsoft.Json.xml
+C:\JiraApiConsumer\JiraApiConsumer\bin\Release\ServiceStack.Text.xml
+C:\JiraApiConsumer\JiraApiConsumer\bin\Release\System.Net.Http.Formatting.xml
+C:\JiraApiConsumer\JiraApiConsumer\obj\Release\JiraApiConsumer.Views.Config.resources
+C:\JiraApiConsumer\JiraApiConsumer\obj\Release\JiraApiConsumer.csproj.GenerateResource.Cache
+C:\JiraApiConsumer\JiraApiConsumer\obj\Release\JiraApiConsumer.exe
+C:\JiraApiConsumer\JiraApiConsumer\obj\Release\JiraApiConsumer.pdb
