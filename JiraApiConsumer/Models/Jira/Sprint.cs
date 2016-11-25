@@ -4,19 +4,24 @@ namespace JiraApiConsumer.Models.Jira
 {
     class Sprint
     {
-        //public int id { get; set; }
-        //public string start { get; set; }
-        //public string end { get; set; }
-        //public string name { get; set; }
-        //public bool closed { get; set; }
-        //public bool editable { get; set; }
-        //public ProjectsAttr projects { get; set; }
+        public struct ProjectAttr
+        {
+            string key { get; set; }
+            string name { get; set; }
+        }
+        public int id { get; set; }
+        public string start { get; set; }
+        public string end { get; set; }
+        public string name { get; set; }
+        public bool closed { get; set; }
+        public bool editable { get; set; }
+        public ProjectAttr[] projects { get; set; }
 
         public static void Show(Sprint sprint)
         {
-            //string valuesStr = "";
-            //valuesStr += $"(\nid: {sprint.id}, \nself: {sprint.self}, \nstate: {sprint.state}, \nstartDate: {sprint.startDate}, \nendDate: {sprint.endDate}, \noriginBoardId: {sprint.originBoardId}, \ngoal: {sprint.goal}\n)";
-            //Console.WriteLine(valuesStr);
+            string valuesStr = "";
+            valuesStr += $"(\nid: {sprint.id}, \nstart: {sprint.start}, \nend: {sprint.end}, \nname: {sprint.name}\n)";
+            Console.WriteLine(valuesStr);
         }
     }
 

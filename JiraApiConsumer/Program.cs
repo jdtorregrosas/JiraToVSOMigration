@@ -62,10 +62,17 @@ namespace JiraApiConsumer
 
                 
 
-                Console.WriteLine("------------ Sprints from Project 10000:  ");
-                Sprints sprints = null;
-                sprints = await apiConsumer.GetProjectSprints("10000");
-                Sprints.Show(sprints);
+                
+                Models.Jira.Project[] projects = null;
+                projects = await apiConsumer.GetProjects();
+                foreach (var i in projects)
+                {
+                    // Models.Jira.Project.Show(i);
+                    Sprints sprints = null;
+                    sprints = await apiConsumer.GetProjectSprints(i.id);
+                    Console.WriteLine($"------------ Sprints from Project {i.id}:  ");
+                    Sprints.Show(sprints);
+                }
 
                 //Console.WriteLine("------------ Current User:  ");
                 //User user = new User { };

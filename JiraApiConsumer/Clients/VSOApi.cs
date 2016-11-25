@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using JiraApiConsumer.Models.Vso;
 using System.Threading.Tasks;
 using JiraApiConsumer.Models;
+using Newtonsoft.Json;
 
 namespace JiraApiConsumer.Clients
 {
@@ -59,5 +60,47 @@ namespace JiraApiConsumer.Clients
                 return new Response(responseBody, success);
             }
         }
+
+        //TODO creating iterations
+
+        public async Task<Response> createIteration(Project project, Iteration iteration)
+        {
+            bool success = false;
+            string responseBody = "";
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var response = await client.PostAsJsonAsync($"DefaultCollection/{project.name}/_apis/wit/classificationNodes/iterations?api-version=1.0", project);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string responseBody2 = "";
+                responseBody = await response.Content.ReadAsStringAsync();
+                var jsonProject = JsonConvert.DeserializeObject(responseBody);
+
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response2 = await client.PostAsJsonAsync($"DefaultCollection/{project.name}/_apis/work/teamsettings/iterations?api-version=v2.0-preview", project);
+                if (response2.IsSuccessStatusCode)
+                {
+                    responseBody2 = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(responseBody2);
+                    success = true;
+                    return new Response(responseBody2, success);
+                }
+                else
+                {
+                    responseBody = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(responseBody);
+                    success = false;
+                    return new Response(responseBody, success);
+                }
+            }
+            else
+            {
+                responseBody = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(responseBody);
+                success = false;
+                return new Response(responseBody, success);
+            }
+        }
     }
+    
 }

@@ -75,6 +75,7 @@
     <Compile Include="Models\Jira\User.cs" />
     <Compile Include="Models\Jira\WorkFlow.cs" />
     <Compile Include="Models\Response.cs" />
+    <Compile Include="Models\Vso\Iteration.cs" />
     <Compile Include="Models\Vso\Project.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
