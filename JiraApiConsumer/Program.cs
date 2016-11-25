@@ -12,12 +12,11 @@ namespace JiraApiConsumer
 {
     public class Program
     {
-        static HttpClient client = new HttpClient();
         [STAThreadAttribute]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.Run(new Mainmenu()); // or whatever
+            //Application.EnableVisualStyles();
+            //Application.Run(new Mainmenu()); // or whatever
             RunAsync().Wait();
         }
 
@@ -99,14 +98,14 @@ namespace JiraApiConsumer
                 //permissions = await apiConsumer.GetPermissions();
                 //Permissions.Show(permissions);
 
-                Console.WriteLine("------------ Projects from board 1:  ");
-                Models.Jira.Project[] projects = null;
-                projects = await apiConsumer.GetProjects();
-                foreach (var i in projects)
-                {
-                    Models.Jira.Project.Show(i);
-                    vsoApiConsumer.createProject(new Models.Vso.Project(i.name, i.description, "Git", "6b724908-ef14-45cf-84f8-768b5384da45"));
-                }
+                //Console.WriteLine("------------ Projects from board 1:  ");
+                //Models.Jira.Project[] projects = null;
+                //projects = await apiConsumer.GetProjects();
+                //foreach (var i in projects)
+                //{
+                //    Models.Jira.Project.Show(i);
+                //    vsoApiConsumer.createProject(new Models.Vso.Project(i.name, i.description, "Git", "6b724908-ef14-45cf-84f8-768b5384da45"));
+                //}
                 //vsoApiConsumer.getProjects();
 
 

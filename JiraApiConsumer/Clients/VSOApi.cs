@@ -3,7 +3,8 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using JiraApiConsumer.Models.Vso;
-
+using System.Threading.Tasks;
+using JiraApiConsumer.Models;
 
 namespace JiraApiConsumer.Clients
 {
@@ -37,19 +38,25 @@ namespace JiraApiConsumer.Clients
             }
         }
 
-        public async void createProject(Project project)
+        public async Task<Response> createProject(Project project)
         {
+            bool success = false;
+            string responseBody = "";
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             var response = await client.PostAsJsonAsync("defaultcollection/_apis/projects?api-version=1.0", project);
             
             if (response.IsSuccessStatusCode)
             {
-                string responseBody = await response.Content.ReadAsStringAsync();
+                responseBody = await response.Content.ReadAsStringAsync();
                 Console.WriteLine(responseBody);
+                success = true;
+                return new Response(responseBody, success);
             } else
             {
-                string responseBody = await response.Content.ReadAsStringAsync();
+                responseBody = await response.Content.ReadAsStringAsync();
                 Console.WriteLine(responseBody);
+                success = false;
+                return new Response(responseBody, success);
             }
         }
     }
