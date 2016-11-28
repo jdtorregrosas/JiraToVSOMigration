@@ -6,6 +6,7 @@ using JiraApiConsumer.Models.Vso;
 using System.Threading.Tasks;
 using JiraApiConsumer.Models;
 using Newtonsoft.Json;
+using System.Threading;
 
 namespace JiraApiConsumer.Clients
 {
@@ -51,6 +52,7 @@ namespace JiraApiConsumer.Clients
                 responseBody = await response.Content.ReadAsStringAsync();
                 Console.WriteLine(responseBody);
                 success = true;
+                Thread.Sleep(4000);
                 return new Response(responseBody, success);
             } else
             {
@@ -68,16 +70,17 @@ namespace JiraApiConsumer.Clients
             bool success = false;
             string responseBody = "";
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var response = await client.PostAsJsonAsync($"DefaultCollection/{project.name}/_apis/wit/classificationNodes/iterations?api-version=1.0", project);
+            var response = await client.PostAsJsonAsync($"DefaultCollection/{project.name}/_apis/wit/classificationNodes/iterations?api-version=1.0", iteration);
 
             if (response.IsSuccessStatusCode)
             {
-                string responseBody2 = "";
                 responseBody = await response.Content.ReadAsStringAsync();
-                var jsonProject = JsonConvert.DeserializeObject(responseBody);
+                var responseJson = JsonConvert.DeserializeObject<IterationNode>(responseBody);
 
+                string responseBody2 = "";
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response2 = await client.PostAsJsonAsync($"DefaultCollection/{project.name}/_apis/work/teamsettings/iterations?api-version=v2.0-preview", project);
+                var body = new { id = responseJson.identifier };
+                var response2 = await client.PostAsJsonAsync($"DefaultCollection/{project.name}/_apis/work/teamsettings/iterations?api-version=v2.0-preview", body);
                 if (response2.IsSuccessStatusCode)
                 {
                     responseBody2 = await response.Content.ReadAsStringAsync();
@@ -87,7 +90,7 @@ namespace JiraApiConsumer.Clients
                 }
                 else
                 {
-                    responseBody = await response.Content.ReadAsStringAsync();
+                    responseBody = await response2.Content.ReadAsStringAsync();
                     Console.WriteLine(responseBody);
                     success = false;
                     return new Response(responseBody, success);

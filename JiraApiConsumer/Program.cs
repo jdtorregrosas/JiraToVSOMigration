@@ -15,9 +15,9 @@ namespace JiraApiConsumer
         [STAThreadAttribute]
         static void Main()
         {
-            //Application.EnableVisualStyles();
-            //Application.Run(new Mainmenu()); // or whatever
-            RunAsync().Wait();
+            Application.EnableVisualStyles();
+            Application.Run(new Mainmenu()); // or whatever
+            //RunAsync().Wait();
         }
 
         static async Task RunAsync()
@@ -71,6 +71,9 @@ namespace JiraApiConsumer
                     Sprints sprints = null;
                     sprints = await apiConsumer.GetProjectSprints(i.id);
                     Console.WriteLine($"------------ Sprints from Project {i.id}:  ");
+                    foreach (var j in sprints.sprints){
+                        await vsoApiConsumer.createIteration(new Models.Vso.Project(i.name, i.description, "Git", "6b724908-ef14-45cf-84f8-768b5384da45"), new Models.Vso.Iteration(j.name, j.start, j.end));
+                    }
                     Sprints.Show(sprints);
                 }
 

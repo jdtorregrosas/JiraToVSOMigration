@@ -124,7 +124,6 @@
             this.cbProjects.TabIndex = 6;
             this.cbProjects.Text = "Projects";
             this.cbProjects.UseVisualStyleBackColor = true;
-            this.cbProjects.CheckedChanged += new System.EventHandler(this.cbProjects_CheckedChanged);
             // 
             // gpMigrationSettings
             // 

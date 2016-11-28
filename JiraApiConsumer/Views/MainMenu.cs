@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Threading.Tasks;
 using JiraApiConsumer.Models.Jira;
 using JiraApiConsumer.Models;
+using System.Threading;
 
 namespace JiraApiConsumer.Views
 {
@@ -17,7 +18,8 @@ namespace JiraApiConsumer.Views
         string vsoUsername;
         string vsoPassword;
         int totalProgress = 100;
-        int totalProccesses = 0;
+        int totalProcesses = 0;
+        int completedProcesses = 0;
         public Mainmenu()
         {
             InitializeComponent();
@@ -36,18 +38,13 @@ namespace JiraApiConsumer.Views
             (new Config()).Show();
         }
 
-        private void btnStartMigration_Click(object sender, EventArgs e)
+        private async void btnStartMigration_Click(object sender, EventArgs e)
         {
+            completedProcesses = 0;
+            totalProcesses = 0;
             progressBarMigration.Value = 0;
             progressBarMigration.Show();
             progressBarMigration.Maximum = totalProgress;
-
-            JiraApi jiraClient = new JiraApi(jiraUrl, jiraUsername, jiraPassword);
-            VSOApi vsoClient = new VSOApi(vsoUrl, vsoUsername, vsoPassword);
-            if (cbProjects.Checked) {
-                var migrateProjects = MigrateProjects(jiraClient, vsoClient);
-                Task.WhenAll(migrateProjects);
-            }
             lblInfo.Hide();
             lblInfo.Text = "";
             txtDetails.Text = "";
@@ -56,13 +53,24 @@ namespace JiraApiConsumer.Views
 
             //    progressBarMigration.Value += 1;
             //}
-            
-            if (totalProccesses == 0)
+
+            if (totalProcesses == 0)
             {
                 lblInfo.Text = "Nothing to Migrate";
             }
             lblInfo.Show();
             lblDetails.Show();
+
+            JiraApi jiraClient = new JiraApi(jiraUrl, jiraUsername, jiraPassword);
+            VSOApi vsoClient = new VSOApi(vsoUrl, vsoUsername, vsoPassword);
+            if (cbProjects.Checked) {
+                await MigrateProjects(jiraClient, vsoClient);
+            }
+            if (cbSprints.Checked)
+            {
+                await MigrateSprints(jiraClient, vsoClient);
+
+            }
         }
 
         private void Mainmenu_Load(object sender, EventArgs e)
@@ -83,35 +91,61 @@ namespace JiraApiConsumer.Views
                 this.Width = 455;
             }
         }
-
+        private async Task MigrateSprints(JiraApi jiraClient, VSOApi vsoClient)
+        {
+            Models.Jira.Project[] projects = null;
+            projects = await jiraClient.GetProjects();
+            foreach (var i in projects)
+            {
+                // Models.Jira.Project.Show(i);
+                Sprints sprints = null;
+                sprints = await jiraClient.GetProjectSprints(i.id);
+                Console.WriteLine($"------------ Sprints from Project {i.id}:  ");
+                int migratedSprints = 0;
+                totalProcesses += sprints.sprints.Length;
+                foreach (var j in sprints.sprints)
+                {
+                    Response response = await vsoClient.createIteration(new Models.Vso.Project(i.name, i.description, "Git", "6b724908-ef14-45cf-84f8-768b5384da45"), new Models.Vso.Iteration(j.name, j.start, j.end));
+                    if (response.success)
+                    {
+                        completedProcesses++;
+                        migratedSprints++;
+                    }
+                    response.message += "\n\r    Migrated Sprints:" + migratedSprints + "/" + sprints.sprints.Length;
+                    showResponse(response);
+                }
+                Sprints.Show(sprints);
+            }
+        }
         private async Task MigrateProjects(JiraApi jiraClient, VSOApi vsoClient)
         {
             Console.WriteLine("------------ Projects from board 1:  ");
             Models.Jira.Project[] projects = null;
             projects = await jiraClient.GetProjects();
             int migratedProjects = 0;
+            totalProcesses += projects.Length;
             foreach (var i in projects)
             {
                 Models.Jira.Project.Show(i);
                 Response response = await vsoClient.createProject(new Models.Vso.Project(i.name, i.description, "Git", "6b724908-ef14-45cf-84f8-768b5384da45"));
                 if (response.success)
                 {
+                    completedProcesses++;
                     migratedProjects++;
                 }
-                response.message = "Migrated Projects:" + migratedProjects + "/" + projects.Length;
+                response.message += "\n\r   Migrated Projects:" + migratedProjects + "/" + projects.Length;
                 showResponse(response);
             }
         }
         private void showResponse(Response response) {
+            progressBarMigration.Value = (completedProcesses * totalProgress) / totalProcesses;
             if (response.success)
             {
-                progressBarMigration.Value = totalProgress / totalProccesses;
-                txtDetails.Text += "\n\r   (Success: )  " + response.message + "\n\r";
+                txtDetails.Text += "\n\r\n\r   SUCCESS:   " + response.message + "\n\r";
             }
             else
             {
-                progressBarMigration.Value = totalProgress / (2 * totalProccesses);
-                txtDetails.Text += "\n\r   (ERROR: )  " + response.message + "\n\r";
+                txtDetails.Text += "\n\r\n\r   ERROR:   " + response.message + "\n\r";
                 lblInfo.Text ="Migration Error!";
             }
             if (progressBarMigration.Value == totalProgress)
@@ -200,15 +234,26 @@ namespace JiraApiConsumer.Views
             Console.ReadLine();
         }
 
-        private void cbProjects_CheckedChanged(object sender, EventArgs e)
-        {
-            if (cbProjects.Checked)
-            {
-                totalProccesses++;
-            }
-            else {
-                totalProccesses--;
-            }
-        }
+        //private void cbProjects_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    if (cbProjects.Checked)
+        //    {
+        //        totalProcesses++;
+        //    }
+        //    else {
+        //        totalProcesses--;
+        //    }
+        //}
+        //private void cbSprints_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    if (cbSprints.Checked)
+        //    {
+        //        totalProcesses++;
+        //    }
+        //    else
+        //    {
+        //        totalProcesses--;
+        //    }
+        //}
     }
 }
