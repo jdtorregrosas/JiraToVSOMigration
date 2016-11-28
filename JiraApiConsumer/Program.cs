@@ -60,9 +60,24 @@ namespace JiraApiConsumer
                 //sprints = await apiConsumer.GetBoardSprints("1");
                 //Sprints.Show(sprints);
 
-                
 
-                
+
+
+                //Models.Jira.Project[] projects = null;
+                //projects = await apiConsumer.GetProjects();
+                //foreach (var i in projects)
+                //{
+                //    // Models.Jira.Project.Show(i);
+                //    Sprints sprints = null;
+                //    sprints = await apiConsumer.GetProjectSprints(i.id);
+                //    Console.WriteLine($"------------ Sprints from Project {i.id}:  ");
+                //    foreach (var j in sprints.sprints){
+                //        await vsoApiConsumer.createIteration(new Models.Vso.Project(i.name, i.description, "Git", "6b724908-ef14-45cf-84f8-768b5384da45"), new Models.Vso.Iteration(j.name, j.start, j.end));
+                //    }
+                //    Sprints.Show(sprints);
+                //}
+
+
                 Models.Jira.Project[] projects = null;
                 projects = await apiConsumer.GetProjects();
                 foreach (var i in projects)
@@ -70,11 +85,14 @@ namespace JiraApiConsumer
                     // Models.Jira.Project.Show(i);
                     Sprints sprints = null;
                     sprints = await apiConsumer.GetProjectSprints(i.id);
-                    Console.WriteLine($"------------ Sprints from Project {i.id}:  ");
-                    foreach (var j in sprints.sprints){
-                        await vsoApiConsumer.createIteration(new Models.Vso.Project(i.name, i.description, "Git", "6b724908-ef14-45cf-84f8-768b5384da45"), new Models.Vso.Iteration(j.name, j.start, j.end));
+                    foreach (var j in sprints.sprints)
+                    {
+                        Issues issues = null;
+                        issues = await apiConsumer.GetProjectSprintIssues(j.id);
+                        foreach (var k in issues.issues) {
+                            await vsoApiConsumer.createIterationWorkItem(new Models.Vso.Project(i.name, i.description, "Git", "adcc42ab-9882-485e-a3ed-7678f01f66bc"), new Models.Vso.Iteration(j.name, j.start, j.end), k.fields.description);
+                        }
                     }
-                    Sprints.Show(sprints);
                 }
 
                 //Console.WriteLine("------------ Current User:  ");

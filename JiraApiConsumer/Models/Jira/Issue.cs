@@ -39,7 +39,7 @@ namespace JiraApiConsumer.Models.Jira
         public static void Show(Issue issue)
         {
             string valuesStr = "";
-            valuesStr += $"(\nid: {issue.id}, \nself: {issue.self}, \nkey: {issue.key}, \nfields:\n\tissuetype: {issue}, \n\tissuetype: {issue.fields.issuetype.name}, \n\tproject: {issue.fields.project.name}, \n\ttimespent: {issue.fields.timespent}, \n\tlastViewed: {issue.fields.lastViewed}, \n\tcreated: {issue.fields.updated}, \n\tassignee: , \n\tdescription: {issue.fields.description}\n)";
+            valuesStr += $"(\nid: {issue.id}, \nself: {issue.self}, \nkey: {issue.key}, \nfields:\n\tissue: {issue}, \n\tissuetype: {issue.fields.issuetype.name}, \n\tproject: {issue.fields.project.name}, \n\ttimespent: {issue.fields.timespent}, \n\tlastViewed: {issue.fields.lastViewed}, \n\tcreated: {issue.fields.updated}, \n\tassignee: , \n\tdescription: {issue.fields.description}\n)";
             Console.WriteLine(valuesStr);
         }
     }

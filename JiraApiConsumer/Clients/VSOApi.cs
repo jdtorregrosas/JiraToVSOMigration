@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using JiraApiConsumer.Models;
 using Newtonsoft.Json;
 using System.Threading;
+using System.Collections.Generic;
+using System.Text;
 
 namespace JiraApiConsumer.Clients
 {
@@ -104,6 +106,64 @@ namespace JiraApiConsumer.Clients
                 return new Response(responseBody, success);
             }
         }
+
+        public async Task<Response> createIterationWorkItem(Project project, Iteration iteration, string wiTitle)
+        {
+            bool success = false;
+            string responseBody = "";
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json-patch+json"));
+
+            List<WorkItemProperty> workItemProperties = new List<WorkItemProperty>();
+            WorkItemProperty title = new WorkItemProperty("/fields/System.Title", wiTitle);
+            WorkItemProperty iterationPath = new WorkItemProperty("/fields/System.IterationPath", $"{project.name}\\\\{iteration.name}");
+            workItemProperties.Add(title);
+            workItemProperties.Add(iterationPath);
+
+            var response = await client.PatchAsJsonAsync($"DefaultCollection/{project.name}/_apis/wit/workitems/$User Story?api-version=1.0", workItemProperties);
+
+            if (response.IsSuccessStatusCode)
+            {
+                responseBody = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(responseBody);
+                success = true;
+                return new Response(responseBody, success);
+            }
+            else
+            {
+                responseBody = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(responseBody);
+                success = false;
+                return new Response(responseBody, success);
+            }
+        }
+
     }
-    
+
+    public static class HttpClientExtensions
+    {
+        public static async Task<HttpResponseMessage> PatchAsJsonAsync(this HttpClient client, string requestUri, object data)
+        {
+            var json = JsonConvert.SerializeObject(data);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json-patch+json");
+
+            var method = new HttpMethod("PATCH");
+            var request = new HttpRequestMessage(method, client.BaseAddress + requestUri)
+            {
+                Content = httpContent
+            };
+
+            HttpResponseMessage response = new HttpResponseMessage();
+            try
+            {
+                response = await client.SendAsync(request);
+            }
+            catch (TaskCanceledException e)
+            {
+                Console.WriteLine("ERROR: " + e.ToString());
+            }
+
+            return response;
+        }
+    }
+
 }

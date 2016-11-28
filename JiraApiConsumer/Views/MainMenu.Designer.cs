@@ -33,7 +33,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.progressBarMigration = new System.Windows.Forms.ProgressBar();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.cbSprintStories = new System.Windows.Forms.CheckBox();
             this.cbSprints = new System.Windows.Forms.CheckBox();
             this.cbProjects = new System.Windows.Forms.CheckBox();
             this.gpMigrationSettings = new System.Windows.Forms.GroupBox();
@@ -95,15 +95,15 @@
             this.checkBox4.Text = "Epics";
             this.checkBox4.UseVisualStyleBackColor = true;
             // 
-            // checkBox3
+            // cbSprintStories
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(23, 340);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(55, 17);
-            this.checkBox3.TabIndex = 8;
-            this.checkBox3.Text = "Tasks";
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.cbSprintStories.AutoSize = true;
+            this.cbSprintStories.Location = new System.Drawing.Point(23, 340);
+            this.cbSprintStories.Name = "cbSprintStories";
+            this.cbSprintStories.Size = new System.Drawing.Size(88, 17);
+            this.cbSprintStories.TabIndex = 8;
+            this.cbSprintStories.Text = "Sprint Stories";
+            this.cbSprintStories.UseVisualStyleBackColor = true;
             // 
             // cbSprints
             // 
@@ -195,7 +195,7 @@
             this.Controls.Add(this.lblDetails);
             this.Controls.Add(this.txtDetails);
             this.Controls.Add(this.checkBox4);
-            this.Controls.Add(this.checkBox3);
+            this.Controls.Add(this.cbSprintStories);
             this.Controls.Add(this.cbSprints);
             this.Controls.Add(this.cbProjects);
             this.Controls.Add(this.gpMigrationSettings);
@@ -219,7 +219,7 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.ProgressBar progressBarMigration;
         private System.Windows.Forms.CheckBox checkBox4;
-        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.CheckBox cbSprintStories;
         private System.Windows.Forms.CheckBox cbSprints;
         private System.Windows.Forms.CheckBox cbProjects;
         private System.Windows.Forms.GroupBox gpMigrationSettings;

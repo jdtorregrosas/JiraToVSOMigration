@@ -71,6 +71,9 @@ namespace JiraApiConsumer.Views
                 await MigrateSprints(jiraClient, vsoClient);
 
             }
+            if (cbSprintStories.Checked) {
+                await MigrateSprintsStories(jiraClient, vsoClient);
+            }
         }
 
         private void Mainmenu_Load(object sender, EventArgs e)
@@ -91,6 +94,35 @@ namespace JiraApiConsumer.Views
                 this.Width = 455;
             }
         }
+        private async Task MigrateSprintsStories(JiraApi jiraClient, VSOApi vsoClient)
+        {
+            Models.Jira.Project[] projects = null;
+            projects = await jiraClient.GetProjects();
+            foreach (var i in projects)
+            {
+                // Models.Jira.Project.Show(i);
+                Sprints sprints = null;
+                sprints = await jiraClient.GetProjectSprints(i.id);
+                foreach (var j in sprints.sprints)
+                {
+                    Issues issues = null;
+                    issues = await jiraClient.GetProjectSprintIssues(j.id);
+                    var migratedStories = 0;
+                    totalProcesses += issues.issues.Length;
+                    foreach (var k in issues.issues)
+                    {
+                        Response response = await vsoClient.createIterationWorkItem(new Models.Vso.Project(i.name, i.description, "Git", "adcc42ab-9882-485e-a3ed-7678f01f66bc"), new Models.Vso.Iteration(j.name, j.start, j.end), k.fields.description);
+                        if (response.success)
+                        {
+                            completedProcesses++;
+                            migratedStories++;
+                        }
+                        response.message += "\n\r    Migrated Sprint Stories:" + migratedStories + "/" + issues.issues.Length;
+                        showResponse(response);
+                    }
+                }
+            }
+        }
         private async Task MigrateSprints(JiraApi jiraClient, VSOApi vsoClient)
         {
             Models.Jira.Project[] projects = null;
@@ -105,7 +137,7 @@ namespace JiraApiConsumer.Views
                 totalProcesses += sprints.sprints.Length;
                 foreach (var j in sprints.sprints)
                 {
-                    Response response = await vsoClient.createIteration(new Models.Vso.Project(i.name, i.description, "Git", "6b724908-ef14-45cf-84f8-768b5384da45"), new Models.Vso.Iteration(j.name, j.start, j.end));
+                    Response response = await vsoClient.createIteration(new Models.Vso.Project(i.name, i.description, "Git", "adcc42ab-9882-485e-a3ed-7678f01f66bc"), new Models.Vso.Iteration(j.name, j.start, j.end));
                     if (response.success)
                     {
                         completedProcesses++;
@@ -127,7 +159,7 @@ namespace JiraApiConsumer.Views
             foreach (var i in projects)
             {
                 Models.Jira.Project.Show(i);
-                Response response = await vsoClient.createProject(new Models.Vso.Project(i.name, i.description, "Git", "6b724908-ef14-45cf-84f8-768b5384da45"));
+                Response response = await vsoClient.createProject(new Models.Vso.Project(i.name, i.description, "Git", "adcc42ab-9882-485e-a3ed-7678f01f66bc"));
                 if (response.success)
                 {
                     completedProcesses++;

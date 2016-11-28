@@ -109,6 +109,18 @@ namespace JiraApiConsumer.Clients
             return sprints;
         }
 
+        public async Task<Issues> GetProjectSprintIssues(int sprintID)
+        {
+            Issues issues = null;
+
+            var response = await client.GetAsync($"/rest/api/2/search?jql=Sprint={sprintID}");
+            if (response.IsSuccessStatusCode)
+            {
+                issues = await response.Content.ReadAsAsync<Issues>();
+            }
+            return issues;
+        }
+
         public async Task<Permissions> GetPermissions()
         {
             Permissions permissions = null;
