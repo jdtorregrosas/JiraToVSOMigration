@@ -32,7 +32,6 @@
             this.btnConfig = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.progressBarMigration = new System.Windows.Forms.ProgressBar();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.cbSprintStories = new System.Windows.Forms.CheckBox();
             this.cbSprints = new System.Windows.Forms.CheckBox();
             this.cbProjects = new System.Windows.Forms.CheckBox();
@@ -42,7 +41,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.lblInfo = new System.Windows.Forms.Label();
+            this.cbStories = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.gpMigrationSettings.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnStartMigration
@@ -85,48 +86,45 @@
             this.progressBarMigration.TabIndex = 3;
             this.progressBarMigration.Visible = false;
             // 
-            // checkBox4
-            // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(23, 363);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(52, 17);
-            this.checkBox4.TabIndex = 9;
-            this.checkBox4.Text = "Epics";
-            this.checkBox4.UseVisualStyleBackColor = true;
-            // 
             // cbSprintStories
             // 
             this.cbSprintStories.AutoSize = true;
-            this.cbSprintStories.Location = new System.Drawing.Point(23, 340);
+            this.cbSprintStories.Location = new System.Drawing.Point(6, 88);
             this.cbSprintStories.Name = "cbSprintStories";
             this.cbSprintStories.Size = new System.Drawing.Size(88, 17);
             this.cbSprintStories.TabIndex = 8;
             this.cbSprintStories.Text = "Sprint Stories";
             this.cbSprintStories.UseVisualStyleBackColor = true;
+            this.cbSprintStories.CheckedChanged += new System.EventHandler(this.cbSprintStories_CheckedChanged);
             // 
             // cbSprints
             // 
             this.cbSprints.AutoSize = true;
-            this.cbSprints.Location = new System.Drawing.Point(23, 317);
+            this.cbSprints.Location = new System.Drawing.Point(6, 42);
             this.cbSprints.Name = "cbSprints";
             this.cbSprints.Size = new System.Drawing.Size(58, 17);
             this.cbSprints.TabIndex = 7;
             this.cbSprints.Text = "Sprints";
             this.cbSprints.UseVisualStyleBackColor = true;
+            this.cbSprints.CheckedChanged += new System.EventHandler(this.cbSprints_CheckedChanged);
             // 
             // cbProjects
             // 
             this.cbProjects.AutoSize = true;
-            this.cbProjects.Location = new System.Drawing.Point(23, 294);
+            this.cbProjects.Location = new System.Drawing.Point(6, 19);
             this.cbProjects.Name = "cbProjects";
             this.cbProjects.Size = new System.Drawing.Size(64, 17);
             this.cbProjects.TabIndex = 6;
             this.cbProjects.Text = "Projects";
             this.cbProjects.UseVisualStyleBackColor = true;
+            this.cbProjects.CheckedChanged += new System.EventHandler(this.cbProjects_CheckedChanged);
             // 
             // gpMigrationSettings
             // 
+            this.gpMigrationSettings.Controls.Add(this.cbStories);
+            this.gpMigrationSettings.Controls.Add(this.cbProjects);
+            this.gpMigrationSettings.Controls.Add(this.cbSprints);
+            this.gpMigrationSettings.Controls.Add(this.cbSprintStories);
             this.gpMigrationSettings.Location = new System.Drawing.Point(12, 269);
             this.gpMigrationSettings.Name = "gpMigrationSettings";
             this.gpMigrationSettings.Size = new System.Drawing.Size(402, 125);
@@ -184,6 +182,17 @@
             this.lblInfo.Text = "info";
             this.lblInfo.Visible = false;
             // 
+            // cbStories
+            // 
+            this.cbStories.AutoSize = true;
+            this.cbStories.Location = new System.Drawing.Point(6, 65);
+            this.cbStories.Name = "cbStories";
+            this.cbStories.Size = new System.Drawing.Size(137, 17);
+            this.cbStories.TabIndex = 9;
+            this.cbStories.Text = "Stories, Epics, Features";
+            this.cbStories.UseVisualStyleBackColor = true;
+            this.cbStories.CheckedChanged += new System.EventHandler(this.cbStories_CheckedChanged);
+            // 
             // Mainmenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -194,10 +203,6 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblDetails);
             this.Controls.Add(this.txtDetails);
-            this.Controls.Add(this.checkBox4);
-            this.Controls.Add(this.cbSprintStories);
-            this.Controls.Add(this.cbSprints);
-            this.Controls.Add(this.cbProjects);
             this.Controls.Add(this.gpMigrationSettings);
             this.Controls.Add(this.progressBarMigration);
             this.Controls.Add(this.btnStartMigration);
@@ -207,6 +212,8 @@
             this.Text = "MainMenu";
             this.Load += new System.EventHandler(this.Mainmenu_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.gpMigrationSettings.ResumeLayout(false);
+            this.gpMigrationSettings.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -218,7 +225,6 @@
         private System.Windows.Forms.Button btnStartMigration;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.ProgressBar progressBarMigration;
-        private System.Windows.Forms.CheckBox checkBox4;
         private System.Windows.Forms.CheckBox cbSprintStories;
         private System.Windows.Forms.CheckBox cbSprints;
         private System.Windows.Forms.CheckBox cbProjects;
@@ -228,5 +234,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblInfo;
+        private System.Windows.Forms.CheckBox cbStories;
     }
 }

@@ -23,7 +23,6 @@ namespace JiraApiConsumer.Clients
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             var authByteArray = System.Text.Encoding.ASCII.GetBytes($"{username}:{password}");
             var authString = Convert.ToBase64String(authByteArray);
-            // var authString = "anVsaWFudDo2OVdhbHB1cmdpc05hY2h0Njk=";
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authString);
 
         }

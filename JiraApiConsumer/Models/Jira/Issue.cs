@@ -7,6 +7,16 @@ namespace JiraApiConsumer.Models.Jira
     /// </summary>
     class Issue
     {
+        public class StatusCategory
+        {
+            public int id { get; set; }
+            public string key { get; set; }
+        }
+
+        public class Status
+        {
+            public StatusCategory statusCategory { get; set; }
+        }
         public class IssueType
         {
             public string self { get; set; }
@@ -25,6 +35,7 @@ namespace JiraApiConsumer.Models.Jira
             public string lastViewed { get; set; }
             public string created { get; set; }
             public string updated { get; set; }
+            public Status status { get; set; }
             public User assignee { get; set; }
             public string description { get; set; }
             public string summary { get; set; }

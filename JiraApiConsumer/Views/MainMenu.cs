@@ -20,6 +20,9 @@ namespace JiraApiConsumer.Views
         int totalProgress = 100;
         int totalProcesses = 0;
         int completedProcesses = 0;
+        JiraApi jiraClient;
+        VSOApi vsoClient;
+        MigrationHelper migration;
         public Mainmenu()
         {
             InitializeComponent();
@@ -41,38 +44,49 @@ namespace JiraApiConsumer.Views
         private async void btnStartMigration_Click(object sender, EventArgs e)
         {
             completedProcesses = 0;
-            totalProcesses = 0;
             progressBarMigration.Value = 0;
             progressBarMigration.Show();
-            progressBarMigration.Maximum = totalProgress;
+            progressBarMigration.Maximum = totalProcesses;
             lblInfo.Hide();
             lblInfo.Text = "";
             txtDetails.Text = "";
 
-            //for (int i = 0; i < 50; i++) {
+            
+            lblInfo.Show();
+            lblDetails.Show();
 
-            //    progressBarMigration.Value += 1;
-            //}
-
+            jiraClient = new JiraApi(jiraUrl, jiraUsername, jiraPassword);
+            vsoClient = new VSOApi(vsoUrl, vsoUsername, vsoPassword);
+            migration = new MigrationHelper(jiraClient, vsoClient);
+            if (cbProjects.Checked) {
+                lblInfo.Text = "Migrating projects...";
+                txtDetails.Text += await migration.MigrateProjects();
+                progressBarMigration.Value++;
+            }
+            if (cbSprints.Checked)
+            {
+                lblInfo.Text = "Migrating sprints...";
+                txtDetails.Text +=  await migration.MigrateSprints();
+                progressBarMigration.Value++;
+            }
+            if (cbStories.Checked)
+            {
+                lblInfo.Text = "Migrating stories...";
+                txtDetails.Text += await migration.MigrateStories();
+                progressBarMigration.Value++;
+            }
+            if (cbSprintStories.Checked) {
+                lblInfo.Text = "Migrating sprint stories...";
+                txtDetails.Text += await migration.MigrateSprintsStories();
+                progressBarMigration.Value++;
+            }
             if (totalProcesses == 0)
             {
                 lblInfo.Text = "Nothing to Migrate";
             }
-            lblInfo.Show();
-            lblDetails.Show();
-
-            JiraApi jiraClient = new JiraApi(jiraUrl, jiraUsername, jiraPassword);
-            VSOApi vsoClient = new VSOApi(vsoUrl, vsoUsername, vsoPassword);
-            if (cbProjects.Checked) {
-                await MigrateProjects(jiraClient, vsoClient);
-            }
-            if (cbSprints.Checked)
+            if (totalProcesses == progressBarMigration.Value && totalProcesses != 0)
             {
-                await MigrateSprints(jiraClient, vsoClient);
-
-            }
-            if (cbSprintStories.Checked) {
-                await MigrateSprintsStories(jiraClient, vsoClient);
+                lblInfo.Text = "Migration Finished, see details >>";
             }
         }
 
@@ -94,198 +108,53 @@ namespace JiraApiConsumer.Views
                 this.Width = 455;
             }
         }
-        private async Task MigrateSprintsStories(JiraApi jiraClient, VSOApi vsoClient)
+
+        private void cbProjects_CheckedChanged(object sender, EventArgs e)
         {
-            Models.Jira.Project[] projects = null;
-            projects = await jiraClient.GetProjects();
-            foreach (var i in projects)
+            if (cbProjects.Checked)
             {
-                // Models.Jira.Project.Show(i);
-                Sprints sprints = null;
-                sprints = await jiraClient.GetProjectSprints(i.id);
-                foreach (var j in sprints.sprints)
-                {
-                    Issues issues = null;
-                    issues = await jiraClient.GetProjectSprintIssues(j.id);
-                    var migratedStories = 0;
-                    totalProcesses += issues.issues.Length;
-                    foreach (var k in issues.issues)
-                    {
-                        Response response = await vsoClient.createIterationWorkItem(new Models.Vso.Project(i.name, i.description, "Git", "adcc42ab-9882-485e-a3ed-7678f01f66bc"), new Models.Vso.Iteration(j.name, j.start, j.end), k.fields.description);
-                        if (response.success)
-                        {
-                            completedProcesses++;
-                            migratedStories++;
-                        }
-                        response.message += "\n\r    Migrated Sprint Stories:" + migratedStories + "/" + issues.issues.Length;
-                        showResponse(response);
-                    }
-                }
-            }
-        }
-        private async Task MigrateSprints(JiraApi jiraClient, VSOApi vsoClient)
-        {
-            Models.Jira.Project[] projects = null;
-            projects = await jiraClient.GetProjects();
-            foreach (var i in projects)
-            {
-                // Models.Jira.Project.Show(i);
-                Sprints sprints = null;
-                sprints = await jiraClient.GetProjectSprints(i.id);
-                Console.WriteLine($"------------ Sprints from Project {i.id}:  ");
-                int migratedSprints = 0;
-                totalProcesses += sprints.sprints.Length;
-                foreach (var j in sprints.sprints)
-                {
-                    Response response = await vsoClient.createIteration(new Models.Vso.Project(i.name, i.description, "Git", "adcc42ab-9882-485e-a3ed-7678f01f66bc"), new Models.Vso.Iteration(j.name, j.start, j.end));
-                    if (response.success)
-                    {
-                        completedProcesses++;
-                        migratedSprints++;
-                    }
-                    response.message += "\n\r    Migrated Sprints:" + migratedSprints + "/" + sprints.sprints.Length;
-                    showResponse(response);
-                }
-                Sprints.Show(sprints);
-            }
-        }
-        private async Task MigrateProjects(JiraApi jiraClient, VSOApi vsoClient)
-        {
-            Console.WriteLine("------------ Projects from board 1:  ");
-            Models.Jira.Project[] projects = null;
-            projects = await jiraClient.GetProjects();
-            int migratedProjects = 0;
-            totalProcesses += projects.Length;
-            foreach (var i in projects)
-            {
-                Models.Jira.Project.Show(i);
-                Response response = await vsoClient.createProject(new Models.Vso.Project(i.name, i.description, "Git", "adcc42ab-9882-485e-a3ed-7678f01f66bc"));
-                if (response.success)
-                {
-                    completedProcesses++;
-                    migratedProjects++;
-                }
-                response.message += "\n\r   Migrated Projects:" + migratedProjects + "/" + projects.Length;
-                showResponse(response);
-            }
-        }
-        private void showResponse(Response response) {
-            progressBarMigration.Value = (completedProcesses * totalProgress) / totalProcesses;
-            if (response.success)
-            {
-                txtDetails.Text += "\n\r\n\r   SUCCESS:   " + response.message + "\n\r";
+                totalProcesses++;
             }
             else
             {
-                txtDetails.Text += "\n\r\n\r   ERROR:   " + response.message + "\n\r";
-                lblInfo.Text ="Migration Error!";
-            }
-            if (progressBarMigration.Value == totalProgress)
-            {
-                lblInfo.Text = "Migration Successful";
+                totalProcesses--;
             }
         }
-        static async Task RunAsync()
+
+        private void cbSprints_CheckedChanged(object sender, EventArgs e)
         {
-
-            try
+            if (cbSprints.Checked)
             {
-                //Console.WriteLine("------------ Boards:  ");
-                //Boards boards = new Boards { };
-                //boards = await apiConsumer.GetBoards();
-                //Boards.Show(boards);
-
-                //Console.WriteLine("------------ Board 1:  ");
-                //Board board = new Board { };
-                //board = await apiConsumer.GetBoard("1");
-                //Board.Show(board);
-
-                //Console.WriteLine("------------ Board 1 Backlog:  ");
-                //Issues backlog = new Issues { };
-                //backlog = await apiConsumer.GetBoardBacklog("1");
-                //Issues.Show(backlog);
-
-                //Console.WriteLine("------------ Board 1 Issues:  ");
-                //Issues boardIssues = new Issues { };
-                //boardIssues = await apiConsumer.GetBoardIssues("1");
-                //Issues.Show(boardIssues);
-
-                //Console.WriteLine("------------ Board 1 Sprints:  ");
-                //Sprints sprints = null;
-                //sprints = await apiConsumer.GetBoardSprints("1");
-                //Sprints.Show(sprints);
-
-
-
-                //Console.WriteLine("------------ Sprints from Project 10000:  ");
-                //Sprints sprints = null;
-                //sprints = await apiConsumer.GetProjectSprints("10000");
-                //Sprints.Show(sprints);
-
-                //Console.WriteLine("------------ Current User:  ");
-                //User user = new User { };
-                //user = await apiConsumer.GetCurrentUser();
-                //User.Show(user);
-
-                //Console.WriteLine("------------ All Users:  ");
-                //User[] users = null;
-                //users = await apiConsumer.GetUsers();
-                //foreach (var i in users)
-                //{
-                //    User.Show(i);
-                //}
-
-                //Console.WriteLine("------------ Workflows:  ");
-                //WorkFlow[] workflows = null;
-                //workflows = await apiConsumer.GetWorkFlows();
-                //foreach (var i in workflows)
-                //{
-                //    WorkFlow.Show(i);
-                //}
-
-                //Console.WriteLine("------------ Issues:  ");
-                //Issues issues = null;
-                //issues = await apiConsumer.GetProjectIssues("10000");
-                //Issues.Show(issues);
-
-                //Console.WriteLine("------------ Permissions:  ");
-                //Permissions permissions = null;
-                //permissions = await apiConsumer.GetPermissions();
-                //Permissions.Show(permissions);
-
-                
-                //vsoApiConsumer.getProjects();
-
-
+                totalProcesses++;
             }
-            catch (Exception e)
+            else
             {
-                Console.WriteLine(e);
+                totalProcesses--;
             }
-
-            Console.ReadLine();
         }
 
-        //private void cbProjects_CheckedChanged(object sender, EventArgs e)
-        //{
-        //    if (cbProjects.Checked)
-        //    {
-        //        totalProcesses++;
-        //    }
-        //    else {
-        //        totalProcesses--;
-        //    }
-        //}
-        //private void cbSprints_CheckedChanged(object sender, EventArgs e)
-        //{
-        //    if (cbSprints.Checked)
-        //    {
-        //        totalProcesses++;
-        //    }
-        //    else
-        //    {
-        //        totalProcesses--;
-        //    }
-        //}
+        private void cbSprintStories_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbSprintStories.Checked)
+            {
+                totalProcesses++;
+            }
+            else
+            {
+                totalProcesses--;
+            }
+        }
+
+        private void cbStories_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbStories.Checked)
+            {
+                totalProcesses++;
+            }
+            else
+            {
+                totalProcesses--;
+            }
+        }
     }
 }

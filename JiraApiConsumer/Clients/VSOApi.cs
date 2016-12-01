@@ -137,6 +137,44 @@ namespace JiraApiConsumer.Clients
             }
         }
 
+        public async Task<Response> createWorkItem(Project project, WorkItem workItem)
+        {
+            bool success = false;
+            string responseBody = "";
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json-patch+json"));
+
+            List<WorkItemProperty> workItemProperties = new List<WorkItemProperty>();
+            WorkItemProperty title = new WorkItemProperty("/fields/System.Title", workItem.title);
+            WorkItemProperty description = new WorkItemProperty("/fields/System.Description", workItem.description);
+            WorkItemProperty status = new WorkItemProperty("/fields/System.State", workItem.status);
+            WorkItemProperty reason = new WorkItemProperty("/fields/System.Reason", workItem.reason);
+            workItemProperties.Add(title);
+            if(workItem.status != "") {
+                workItemProperties.Add(status);
+                workItemProperties.Add(reason);
+            }
+            if (workItem.description != null)
+            {
+                workItemProperties.Add(description);
+            }
+            var response = await client.PatchAsJsonAsync($"DefaultCollection/{project.name}/_apis/wit/workitems/${workItem.type}?api-version=1.0", workItemProperties);
+
+            if (response.IsSuccessStatusCode)
+            {
+                responseBody = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(responseBody);
+                success = true;
+                return new Response(responseBody, success);
+            }
+            else
+            {
+                responseBody = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(responseBody);
+                success = false;
+                return new Response(responseBody, success);
+            }
+        }
+
     }
 
     public static class HttpClientExtensions
